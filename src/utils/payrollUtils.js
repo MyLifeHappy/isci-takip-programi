@@ -65,9 +65,9 @@ export function calculateEmployeePayroll(employee, attendanceRows, settings, mon
     hourlyRate,
     absenceDeduction,
     overtimePayment,
-    payableLegal: legalSalary - absenceDeduction * fullLegalRatio + overtimePayment * fullLegalRatio,
-    payableCash: cashSalary - absenceDeduction * fullCashRatio + overtimePayment * fullCashRatio,
-    payableTotal,
+    payableLegal: legalSalary,
+    payableCash: cashSalary - absenceDeduction + overtimePayment,
+    payableTotal: legalSalary + cashSalary - absenceDeduction + overtimePayment,
   };
 }
 

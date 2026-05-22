@@ -43,8 +43,20 @@ export default function AttendanceForm({ employees, settings, onAddAttendance, c
         </option>
       ))}
   </select>
+  </label>
+<label className="date-field">
+  Tarih Seç
+  <div className="date-input-wrapper">
+    <input
+      type="date"
+      value={form.date}
+      onClick={(e) => e.currentTarget.showPicker?.()}
+      onFocus={(e) => e.currentTarget.showPicker?.()}
+      onChange={(e) => updateField('date', e.target.value)}
+    />
+    <span className="custom-calendar-icon">📅</span>
+  </div>
 </label>
-      <label>Tarih<input type="date" value={form.date} onChange={(e) => updateField('date', e.target.value)} /></label>
       <label>Durum<select value={form.status} onChange={(e) => updateField('status', e.target.value)}><option>Geldi</option><option>Gelmedi</option><option>Yarım Gün</option><option>İzinli</option><option>Raporlu</option></select></label>
       <label>Çalışılan Saat<input type="number" step="0.5" value={form.workedHours} onChange={(e) => updateField('workedHours', e.target.value)} /></label>
       <label>Kesilecek Saat<input type="number" step="0.5" value={form.absentHours} onChange={(e) => updateField('absentHours', e.target.value)} /></label>

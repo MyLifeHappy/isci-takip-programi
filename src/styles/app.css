@@ -75,3 +75,133 @@ small { display: block; color: var(--muted); margin-top: 4px; }
   background: #eefdf8 !important;
   color: #111827 !important;
 }
+@media (max-width: 768px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: auto;
+    padding: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .sidebar-brand {
+    margin-bottom: 12px;
+  }
+
+  .sidebar nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+
+  .sidebar nav button {
+    white-space: nowrap;
+    min-width: max-content;
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .user-box {
+    margin-top: 12px;
+  }
+
+  .main-content {
+    padding: 14px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  table {
+    min-width: 760px;
+  }
+
+  .card:has(table) {
+    overflow-x: auto;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .slip-header,
+  .slip-info,
+  .signature-area {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .login-card {
+    width: calc(100% - 28px);
+    max-width: 420px;
+    padding: 20px;
+  }
+}
+.date-field {
+  cursor: pointer;
+}
+
+.date-field input[type="date"] {
+  cursor: pointer;
+  color-scheme: dark;
+}
+
+.date-field input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(1) brightness(2);
+  opacity: 1;
+  width: 22px;
+  height: 22px;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(5) contrast(2) !important;
+  opacity: 1 !important;
+}
+.date-input-wrapper {
+  position: relative;
+}
+
+.date-input-wrapper input[type="date"] {
+  width: 100%;
+  padding-right: 48px;
+}
+
+.date-input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-calendar-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 20px;
+  filter: brightness(2);
+}
