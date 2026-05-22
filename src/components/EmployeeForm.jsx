@@ -18,7 +18,7 @@ export default function EmployeeForm({ editingEmployee, onSaveEmployee, onCancel
     if (!form.name.trim()) return;
     onSaveEmployee({
       ...form,
-      id: editingEmployee?.id || Date.now(),
+      ...(editingEmployee?.id ? { id: editingEmployee.id } : {}),
       legalSalary: toNumber(form.legalSalary),
       cashSalary: toNumber(form.cashSalary),
       active: true,

@@ -1,22 +1,57 @@
-import { useState } from 'react';
-import EmployeeForm from '../components/EmployeeForm';
-import EmployeeTable from '../components/EmployeeTable';
+import { useEffect, useState } from "react";
+import {
+  getEmployees,
+  addEmployee,
+  updateEmployee,
+  deleteEmployee,
+} from "../services/employeeService";
+import EmployeeForm from "../components/EmployeeForm";
+import EmployeeTable from "../components/EmployeeTable";
 
 export default function EmployeesPage({ employees, setEmployees }) {
   const [editingEmployee, setEditingEmployee] = useState(null);
 
-  function saveEmployee(employee) {
-    setEmployees((prev) => {
-      const exists = prev.some((item) => item.id === employee.id);
-      if (exists) return prev.map((item) => (item.id === employee.id ? employee : item));
-      return [...prev, employee];
-    });
-    setEditingEmployee(null);
+  useEffect(() => {
+    async function load() {
+      const data = await getEmployees();
+      setEmployees(data);
+    }
+
+    load();
+  }, [setEmployees]);
+
+  async function saveEmployee(employee) {
+  if (editingEmployee) {
+    await updateEmployee(employee.id, employee);
+  } else {
+    await addEmployee(employee);
   }
 
-  function removeEmployee(id) {
-    setEmployees((prev) => prev.map((employee) => employee.id === id ? { ...employee, active: false } : employee));
+  const data = await getEmployees();
+  setEmployees(data);
+  setEditingEmployee(null);
+}
+
+  async function removeEmployee(id) {
+    await deleteEmployee(id);
+
+    const data = await getEmployees();
+    setEmployees(data);
   }
 
-  return <div className="page-grid"><EmployeeForm editingEmployee={editingEmployee} onSaveEmployee={saveEmployee} onCancelEdit={() => setEditingEmployee(null)} /><EmployeeTable employees={employees} onEditEmployee={setEditingEmployee} onRemoveEmployee={removeEmployee} /></div>;
+  return (
+    <div className="page-grid">
+      <EmployeeForm
+        editingEmployee={editingEmployee}
+        onSaveEmployee={saveEmployee}
+        onCancelEdit={() => setEditingEmployee(null)}
+      />
+
+      <EmployeeTable
+        employees={employees}
+        onEditEmployee={setEditingEmployee}
+        onRemoveEmployee={removeEmployee}
+      />
+    </div>
+  );
 }
