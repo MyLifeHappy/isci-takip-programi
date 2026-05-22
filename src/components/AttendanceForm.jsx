@@ -22,18 +22,41 @@ export default function AttendanceForm({ employees, settings, onAddAttendance, c
   function submitForm(event) {
     event.preventDefault();
     if (!form.employeeId || !form.date) return;
-    onAddAttendance({ id: Date.now(), employeeId: Number(form.employeeId), date: form.date, status: form.status, workedHours: toNumber(form.workedHours), absentHours: toNumber(form.absentHours), overtimeHours: currentUser.role === 'admin' ? toNumber(form.overtimeHours) : 0, note: form.note, createdBy: currentUser.username });
+    onAddAttendance({ id: Date.now(), employeeId: Number(form.employeeId), date: form.date, status: form.status, workedHours: toNumber(form.workedHours), absentHours: toNumber(form.absentHours), overtimeHours: toNumber(form.overtimeHours), note: form.note, createdBy: currentUser.username });
   }
 
   return (
     <form className="card form-grid" onSubmit={submitForm}>
-      <div className="section-title"><h2>Puantaj / Devamsızlık / Mesai</h2><p>{currentUser.role === 'admin' ? 'Admin mesai ve kesinti girebilir.' : 'Personel kullanıcı sadece devamsızlık / saat girişi yapabilir.'}</p></div>
-      <label>İşçi<select value={form.employeeId} onChange={(e) => updateField('employeeId', e.target.value)}>{employees.filter((e) => e.active).map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}</select></label>
+      <div className="section-title"><h2>Puantaj / Devamsızlık / Mesai</h2><p>{currentUser.role === 'admin' ? 'Admin mesai ve kesinti girebilir.' : 'Vardiya amiri tüm işçiler için puantaj, devamsızlık ve mesai girebilir.'}</p></div>
+      <label>
+  İşçi
+  <select
+    value={form.employeeId}
+    onChange={(e) => updateField('employeeId', e.target.value)}
+    
+  >
+    {employees
+      .filter((e) => e.active)
+      .map((e) => (
+        <option key={e.id} value={e.id}>
+          {e.name}
+        </option>
+      ))}
+  </select>
+</label>
       <label>Tarih<input type="date" value={form.date} onChange={(e) => updateField('date', e.target.value)} /></label>
       <label>Durum<select value={form.status} onChange={(e) => updateField('status', e.target.value)}><option>Geldi</option><option>Gelmedi</option><option>Yarım Gün</option><option>İzinli</option><option>Raporlu</option></select></label>
       <label>Çalışılan Saat<input type="number" step="0.5" value={form.workedHours} onChange={(e) => updateField('workedHours', e.target.value)} /></label>
       <label>Kesilecek Saat<input type="number" step="0.5" value={form.absentHours} onChange={(e) => updateField('absentHours', e.target.value)} /></label>
-      {currentUser.role === 'admin' && <label>Mesai Saati<input type="number" step="0.5" value={form.overtimeHours} onChange={(e) => updateField('overtimeHours', e.target.value)} /></label>}
+      <label>
+  Mesai Saati
+  <input
+    type="number"
+    step="0.5"
+    value={form.overtimeHours}
+    onChange={(e) => updateField('overtimeHours', e.target.value)}
+  />
+</label>
       <label className="full">Not<input value={form.note} onChange={(e) => updateField('note', e.target.value)} placeholder="Örn: 2 saat geç geldi / raporlu" /></label>
       <button type="submit">Kaydı Ekle</button>
     </form>
