@@ -72,12 +72,56 @@ export default function App() {
   if (!currentUser) return <Login onLogin={handleLogin} />;
 
   return (
-    <Layout currentPage={currentPage} setCurrentPage={setCurrentPage} currentUser={currentUser} onLogout={handleLogout}>
-      {currentPage === 'dashboard' && currentUser.role === 'admin' && <DashboardPage employees={employees} attendance={attendance} settings={settings} calendarOverrides={calendarOverrides} />}
-      {currentPage === 'employees' && currentUser.role === 'admin' && <EmployeesPage employees={employees} setEmployees={setEmployees} />}
-      {currentPage === 'attendance' && <AttendancePage employees={employees} attendance={attendance} setAttendance={setAttendance} settings={settings} currentUser={currentUser} />}
-      {currentPage === 'payroll' && currentUser.role === 'admin' && <PayrollPage employees={employees} attendance={attendance} settings={settings} calendarOverrides={calendarOverrides} />}
-      {currentPage === 'settings' && currentUser.role === 'admin' && <SettingsPage settings={settings} setSettings={setSettings} calendarOverrides={calendarOverrides} setCalendarOverrides={setCalendarOverrides} />}
-    </Layout>
-  );
+  <Layout
+    currentPage={currentPage}
+    setCurrentPage={setCurrentPage}
+    currentUser={currentUser}
+    onLogout={handleLogout}
+  >
+    {currentPage === 'dashboard' && currentUser.role === 'admin' && (
+      <DashboardPage
+        employees={employees}
+        attendance={attendance}
+        settings={settings}
+        calendarOverrides={calendarOverrides}
+      />
+    )}
+
+    {currentPage === 'employees' && currentUser.role === 'admin' && (
+      <EmployeesPage
+        employees={employees}
+        setEmployees={setEmployees}
+      />
+    )}
+
+    {currentPage === 'attendance' && (
+      <AttendancePage
+        employees={employees}
+        setEmployees={setEmployees}
+        attendance={attendance}
+        setAttendance={setAttendance}
+        settings={settings}
+        currentUser={currentUser}
+      />
+    )}
+
+    {currentPage === 'payroll' && currentUser.role === 'admin' && (
+      <PayrollPage
+        employees={employees}
+        attendance={attendance}
+        settings={settings}
+        calendarOverrides={calendarOverrides}
+      />
+    )}
+
+    {currentPage === 'settings' && currentUser.role === 'admin' && (
+      <SettingsPage
+        settings={settings}
+        setSettings={setSettings}
+        calendarOverrides={calendarOverrides}
+        setCalendarOverrides={setCalendarOverrides}
+      />
+    )}
+  </Layout>
+);
 }

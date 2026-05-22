@@ -6,22 +6,27 @@ import {
 } from "../services/attendanceService";
 import AttendanceForm from "../components/AttendanceForm";
 import AttendanceTable from "../components/AttendanceTable";
+import { getEmployees } from "../services/employeeService";
 
 export default function AttendancePage({
   employees,
+  setEmployees,
   attendance,
   setAttendance,
   settings,
   currentUser,
 }) {
   useEffect(() => {
-    async function load() {
-      const data = await getAttendance();
-      setAttendance(data);
-    }
+  async function load() {
+    const attendanceData = await getAttendance();
+    setAttendance(attendanceData);
 
-    load();
-  }, [setAttendance]);
+    const employeesData = await getEmployees();
+    setEmployees(employeesData);
+  }
+
+  load();
+}, [setAttendance, setEmployees]);
 
   async function addAttendanceHandler(row) {
     await addAttendance(row);
