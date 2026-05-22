@@ -9,6 +9,9 @@ import SettingsPage from './pages/SettingsPage';
 import { DEFAULT_SETTINGS, INITIAL_ATTENDANCE, INITIAL_CALENDAR_OVERRIDES, INITIAL_EMPLOYEES } from './data/initialData';
 import { loadState, saveState } from './utils/storageUtils';
 import './styles/app.css';
+import { supabase } from "./lib/supabaseClient";
+import { getEmployees } from "./services/employeeService";
+import { getAttendance } from "./services/attendanceService";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(() => loadState('feha_current_user', null));
@@ -23,6 +26,38 @@ export default function App() {
   useEffect(() => saveState('feha_employees', employees), [employees]);
   useEffect(() => saveState('feha_attendance', attendance), [attendance]);
   useEffect(() => saveState('feha_calendar_overrides', calendarOverrides), [calendarOverrides]);
+  useEffect(() => {
+  if (!currentUser) return;
+
+  const employeesChannel = supabase
+    .channel("employees-realtime")
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "employees" },
+      async () => {
+        const data = await getEmployees();
+        setEmployees(data);
+      }
+    )
+    .subscribe();
+
+  const attendanceChannel = supabase
+    .channel("attendance-realtime")
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "attendance" },
+      async () => {
+        const data = await getAttendance();
+        setAttendance(data);
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(employeesChannel);
+    supabase.removeChannel(attendanceChannel);
+  };
+}, [currentUser]);
 
   function handleLogin(user) {
     setCurrentUser(user);
